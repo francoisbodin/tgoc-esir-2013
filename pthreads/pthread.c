@@ -65,6 +65,6 @@ int main(int argc, char *argv[]){
     return 2;
 
   }
-  printf("After join result %f\n",M[N/2][N/2]);
+  printf("After joining the threads --> result %f\n",M[N/2][N/2]);
   return 0;
 }

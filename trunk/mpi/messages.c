@@ -21,7 +21,7 @@ double wallclock(){
 int main(int argc, char *argv[]){
   int   numtasks, taskid, len;
   char hostname[MPI_MAX_PROCESSOR_NAME];
-
+  //just starting the processes
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &numtasks);
   MPI_Comm_rank(MPI_COMM_WORLD,&taskid);

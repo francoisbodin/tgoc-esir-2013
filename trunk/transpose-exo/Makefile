@@ -6,6 +6,6 @@ transpose.exe: transpose.c
 	mpicc transpose.c -o transpose.exe
 
 run: all
-	mpirun -np 4 transpose.exe	
+	mpirun -np 2 transpose.exe	
 clean:
 	rm *.exe *~

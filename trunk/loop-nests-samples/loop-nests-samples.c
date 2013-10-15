@@ -317,7 +317,7 @@ void loopNest15(){
 
 //
 void loopNest16(){
-  int i,jk;
+  int i,j,k;
   for (i = 0; i < DATASIZE; i++){
     for (j = 0; j < DATASIZE; j++){
       A1D2[i][j] *= beta;
@@ -356,7 +356,8 @@ int main(int argc, char *argv[]){
   //loopNest12();
   //loopNest13();
   //loopNest14();
-  loopNest15();
+  //loopNest15();
+  loopNest16();
 
   printf("Resulting A1D1 checksum %u\n", checksum(A1D1,DATASIZE));
   printf("Resulting A2D1 checksum %u\n", checksum(A2D1,DATASIZE));

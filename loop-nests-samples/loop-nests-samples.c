@@ -14,7 +14,9 @@ double A1D2[DATASIZE][DATASIZE];
 double A2D2[DATASIZE][DATASIZE];
 double A1D3[DATASIZE][DATASIZE][DATASIZE];
 double A2D3[DATASIZE][DATASIZE][DATASIZE];
+double scalarS = 0.0;
 
+ 
 // support functions
 unsigned int checksum(double *t, int size){
   unsigned int cs =0;
@@ -131,6 +133,17 @@ void loopNest7(){
   }
 }
 
+//
+void loopNest8(){
+  int i,j;
+  double T;
+  for (i=0;i< DATASIZE; i++){
+    scalarS =  scalarS + A1D1[i]*A2D1[i];
+  }
+}
+
+
+
 int main(int argc, char *argv[]){
 
   initArrays();
@@ -150,7 +163,8 @@ int main(int argc, char *argv[]){
   //loopNest4();
   //loopNest5();
   //loopNest6();
-  loopNest7();
+  //loopNest7();
+  loopNest8();
 
   printf("Resulting A1D1 checksum %u\n", checksum(A1D1,DATASIZE));
   printf("Resulting A2D1 checksum %u\n", checksum(A2D1,DATASIZE));

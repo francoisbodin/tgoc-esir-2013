@@ -105,6 +105,32 @@ void loopNest5(){
   }
 }
 
+//   
+void loopNest6(){
+  int i,j;
+  for (j=1;j< DATASIZE-1; j++){
+    for (i=1;i< DATASIZE-1; i++){
+      A1D2[j][i] = 2*(A1D2[j-1][i+1] + A1D2[j+1][i]);
+    }
+  }
+}
+
+//
+void loopNest7(){
+  int i,j;
+
+  for (i=1;i< DATASIZE-1; i++){
+    for (j=1;j< DATASIZE-1; j++){
+      A1D2[i][j] = A1D2[i-1][j+1]+1;
+    }
+  }
+  for (i=1;i< DATASIZE-1; i++){
+    for (j=DATASIZE-2; j>0; j--){
+      A1D2[i][j] = A1D2[i-1][j+1]+1;
+    }
+  }
+}
+
 int main(int argc, char *argv[]){
 
   initArrays();
@@ -122,7 +148,9 @@ int main(int argc, char *argv[]){
   //loopNest2();
   //loopNest3();
   //loopNest4();
-  loopNest5();
+  //loopNest5();
+  //loopNest6();
+  loopNest7();
 
   printf("Resulting A1D1 checksum %u\n", checksum(A1D1,DATASIZE));
   printf("Resulting A2D1 checksum %u\n", checksum(A2D1,DATASIZE));

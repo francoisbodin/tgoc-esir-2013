@@ -43,6 +43,7 @@ int main( void )
   pthread_t mytask_thread;
   pthread_create(&mytask_thread, NULL, &produce, NULL );
   consume();
+  pthread_join(mytask_thread, NULL);
   return 0;
 }
 

@@ -56,7 +56,7 @@ int main (int argc, char *argv[]) {
     if (tid == 0) {
       nthreads = omp_get_num_threads();
       printf("Number of threads = %d\n", nthreads);
-    } else {
+    } else if (tid == 1) {
       mytask();
     }
     // end of the parallel section ~ join operation   

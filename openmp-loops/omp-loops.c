@@ -8,11 +8,22 @@
 double counter=0;
 double Y[N], X[N];
 double M[N][N];
+int chunk = 1;
 
 double serialFunc(){
   counter++;
   return counter;
 }
+
+void mytaskSerial(){
+  int i,j;
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      M[i][j] = X[i]*Y[j];
+    }
+  }
+}
+
 
 void mytask(){
   int i,j;
@@ -24,6 +35,64 @@ void mytask(){
     }
   }
 }
+
+void mytaskBis(){
+  int i,j;
+#pragma omp parallel
+  {
+#pragma omp for private(j)
+    for (i=0;i<N;i++){
+      for (j=0;j<N;j++){
+	M[i][j] = X[i]*Y[j];
+      }
+    }
+  }
+}
+
+void mytaskWithSchedulingClauseStatic(){
+  int i,j;
+
+#pragma omp parallel for private(j) schedule(static)
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      M[i][j] = X[i]*Y[j];
+    }
+  }
+}
+
+void mytaskWithSchedulingClauseStaticChuck(){
+  int i,j;
+#pragma omp parallel for private(j) schedule(static,chunk)
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      M[i][j] = X[i]*Y[j];
+    }
+  }
+}
+
+void mytaskWithSchedulingClauseDynamic(){
+  int i,j;
+
+#pragma omp parallel for private(j) schedule(dynamic)
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      M[i][j] = X[i]*Y[j];
+    }
+  }
+}
+
+void mytaskWithSchedulingClauseGuided(){
+  int i,j;
+
+#pragma omp parallel for private(j) schedule(guided)
+  for (i=0;i<N;i++){
+    for (j=0;j<N;j++){
+      M[i][j] = X[i]*Y[j];
+    }
+  }
+}
+
+
 
 //return the wallclock time in seconds
 double wallclock(){
@@ -54,11 +123,44 @@ int main (int argc, char *argv[]) {
     }
   }
   printf("Number of threads = %d\n", nthreads);
+  mytaskSerial(); // to avoid start-up issue
+  //
+  tstart = wallclock();
+  mytaskSerial();
+  tend = wallclock();
+  printf("--> result %f\n",M[N/2][N/2]);
+  printf("SERIAL -- Execution time %f sec.\n", tend - tstart);
+  //
   tstart = wallclock();
   mytask();
   tend = wallclock();
   printf("--> result %f\n",M[N/2][N/2]);
-  printf("Execution time %f sec.\n", tend - tstart);
+  printf("BASE -- Execution time %f sec.\n", tend - tstart);
+  //
+  tstart = wallclock();
+  mytaskWithSchedulingClauseStatic();
+  tend = wallclock();
+  printf("--> result %f\n",M[N/2][N/2]);
+  printf("STATIC -- Execution time %f sec.\n", tend - tstart);
+  //
+  tstart = wallclock();
+  mytaskWithSchedulingClauseStaticChuck();
+  tend = wallclock();
+  printf("--> result %f\n",M[N/2][N/2]);
+  printf("STATIC CHUNCK (%d) --  Execution time %f sec.\n", chunk, tend - tstart);
+  //
+  tstart = wallclock();
+  mytaskWithSchedulingClauseDynamic();
+  tend = wallclock();
+  printf("--> result %f\n",M[N/2][N/2]);
+  printf("DYNAMIC -- Execution time %f sec.\n", tend - tstart);
+  //
+  tstart = wallclock();
+  mytaskWithSchedulingClauseGuided();
+  tend = wallclock();
+  printf("--> result %f\n",M[N/2][N/2]);
+  printf("GUIDED -- Execution time %f sec.\n", tend - tstart);
+
   return 0;
 }
 

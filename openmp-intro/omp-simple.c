@@ -62,6 +62,7 @@ int main (int argc, char *argv[]) {
     // end of the parallel section ~ join operation   
   }
   tend = wallclock();
+  printf("Execution time %f sec.\n", tend - tstart);
   printf("--> result %f\n",M[N/2][N/2]);
   return 0;
 }

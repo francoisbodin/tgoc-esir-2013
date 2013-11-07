@@ -78,12 +78,16 @@ int main(int argc, char** argv){
   int i,j;
   double alpha;
   unsigned int count = DATASIZE;
+  cl_platform_id platforms[2];
+  cl_uint num_platforms;
     
   // error control have been omitted for conciseness, OpenCL is quite verbose!
   initArrays();
   printf("Initial A1D1 checksum %u\n", checksum(A1D1,DATASIZE));
   printf("Initial A2D1 checksum %u\n", checksum(A2D1,DATASIZE));
-  clGetDeviceIDs(NULL, gpu ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
+  err = clGetPlatformIDs(1, platforms, &num_platforms);
+  printf("err = %d\n", err);
+  clGetDeviceIDs(platforms[0], gpu ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
   context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
   commands = clCreateCommandQueue(context, device_id, 0, &err);
   buffer = clCreateBuffer(context,  CL_MEM_READ_WRITE,  sizeof(float) * DATASIZE, NULL, NULL);

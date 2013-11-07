@@ -12,8 +12,8 @@
 
 
 
-#define DATASIZE 200000
-#define REPEAT 100
+#define DATASIZE 2000000
+#define REPEAT 10
 
 float A1D1[DATASIZE];
 
@@ -60,10 +60,15 @@ int main(int argc, char** argv){
   cl_mem buffer;                      // device memory used for the GPU data
   int i,j;
   double alpha;
+  cl_platform_id platforms[2];
+  cl_uint num_platforms;
     
     initArrays();
     printf("Initial A1D1 checksum %u\n", checksum(A1D1,DATASIZE));
-    err = clGetDeviceIDs(NULL, gpu ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
+    err = clGetPlatformIDs(1, platforms, &num_platforms);
+    printf("err = %d\n", err);
+    if (err == CL_SUCCESS)
+      err = clGetDeviceIDs(platforms[0], gpu ? CL_DEVICE_TYPE_GPU : CL_DEVICE_TYPE_CPU, 1, &device_id, NULL);
     if (err == CL_SUCCESS)
       context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
     if (!context) err = !CL_SUCCESS;
@@ -93,7 +98,8 @@ int main(int argc, char** argv){
 				   sizeof(float) * DATASIZE, A1D1, 0, NULL, NULL );  
     
     }
-    clFinish(commands);
+    if (err == CL_SUCCESS)
+      clFinish(commands);
     tend = wallclock();
     alpha = (tend - tstart) / ((double)2*DATASIZE);
     printf("Executing during res %f sec.\n",tend - tstart);
@@ -105,9 +111,11 @@ int main(int argc, char** argv){
         exit(1);
       }
     // release stuff
-    clReleaseMemObject(buffer);
-    clReleaseCommandQueue(commands);
-    clReleaseContext(context);
+    if (err == CL_SUCCESS){
+      clReleaseMemObject(buffer);
+      clReleaseCommandQueue(commands);
+      clReleaseContext(context);
+    }
  
     return 0;
 }

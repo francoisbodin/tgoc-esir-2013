@@ -101,7 +101,7 @@ int main(int argc, char** argv){
     if (err == CL_SUCCESS)
       clFinish(commands);
     tend = wallclock();
-    alpha = (tend - tstart) / ((double)2*DATASIZE);
+    alpha = (tend - tstart) / ((double)2*DATASIZE*REPEAT);
     printf("Executing during res %f sec.\n",tend - tstart);
     printf("BW is equal to %f MBs\n",((double) sizeof(float))*(1.0/alpha)/1e6);
     // display checksum

@@ -13,7 +13,7 @@
 
 
 #define DATASIZE 2000000
-#define REPEAT 10
+#define REPEAT 100
 
 float A1D1[DATASIZE];
 
@@ -80,6 +80,8 @@ int main(int argc, char** argv){
       buffer = clCreateBuffer(context,  CL_MEM_READ_WRITE,  sizeof(float) * DATASIZE, NULL, NULL);
     if (!buffer) err =!CL_SUCCESS;
 
+    if (err == CL_SUCCESS);
+      clFinish(commands);
     tstart = wallclock();
     for (j=0; j< REPEAT ; j++){
       // write on the GPU

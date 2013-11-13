@@ -16,6 +16,7 @@ CL_DEVICE_TYPE_GPU ---> CL_DEVICE_TYPE_ACCELERATOR
 4)
 To compile the command is 
 
-gcc ocl-intro.c  -L/opt/intel/opencl/lib64 -lOpenCL -I/opt/intel/opencl/include
+gcc ocl-intro.c  -L/opt/intel/opencl/lib64 -lOpenCL -I/opt/intel/opencl/include -o ocl-intro.exe
+
 
 

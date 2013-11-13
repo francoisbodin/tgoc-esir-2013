@@ -12,8 +12,8 @@
 
 
 
-#define DATASIZE 2000000
-#define REPEAT 100
+#define DATASIZE 20000
+#define REPEAT 10
 
 float A1D1[DATASIZE];
 
